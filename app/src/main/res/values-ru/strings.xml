@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange">Курсы</string>
+    <string name="favorite">Избранное</string>
+    <string name="converter">Конвертер</string>
+    <string name="settings">Настройки</string>
+    <string name="log_out">Выйти</string>
+    <string name="get_data">Получить данные</string>
+    <string name="user">Пользователь</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="login">Войти</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="go_to_registration">Нет аккаунта</string>
+    <string name="register">Зарегестрироваться</string>
+    <string name="go_to_login">Есть аккаунт</string>
+    <string name="registration">Регистрация</string>
+    <string name="byn">1 BYN</string>
+    <string name="eur">1 EUR</string>
+    <string name="rub">100 RUB</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/registrationFragment">
+
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration">
+        <action
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/loginFragment"/>
+        <action
+            android:id="@+id/action_registration_to_exchange"
+            app:destination="@id/exchangeFragment"
+            app:popUpTo="@id/exchangeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_registration"
+            app:destination="@id/registrationFragment"/>
+        <action
+            android:id="@+id/action_login_to_exchange"
+            app:destination="@id/exchangeFragment"
+            app:popUpTo="@id/exchangeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exchangeFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.ExchangeFragment"
+        android:label="@string/exchange"
+        tools:layout="@layout/fragment_exchange_rates">
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.FavoritesFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/fragment_favorites">
+    </fragment>
+
+    <fragment
+        android:id="@+id/converterFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.ConverterFragment"
+        android:label="@string/converter"
+        tools:layout="@layout/fragment_converter">
+        </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.tms_thesis_moroz.presentation.view.fragment.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_login"
+            app:destination="@id/loginFragment"/>
+       </fragment>
+</navigation>

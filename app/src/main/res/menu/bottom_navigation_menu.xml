@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/exchangeFragment"
+        android:icon="@drawable/cours"
+        android:title="@string/exchange" />
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/favorite"
+        android:title="@string/favorite" />
+    <item
+        android:id="@+id/converterFragment"
+        android:icon="@drawable/converter"
+        android:title="@string/converter" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/setting"
+        android:title="@string/settings" />
+</menu>

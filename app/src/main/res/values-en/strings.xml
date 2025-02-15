@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange">Exchange</string>
+    <string name="favorite">Favorite</string>
+    <string name="converter">Converter</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log out</string>
+    <string name="get_data">Get data</string>
+    <string name="user">User</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="login">Log in</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="go_to_registration">Go to registration</string>
+    <string name="register">Sign in</string>
+    <string name="go_to_login">Go to login</string>
+    <string name="registration">Registration</string>
+    <string name="byn">1 BYN</string>
+    <string name="eur">1 EUR</string>
+    <string name="rub">100 RUB</string>
+</resources>

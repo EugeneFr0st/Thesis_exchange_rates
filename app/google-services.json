@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "804419331237",
+    "project_id": "thesiscurrency",
+    "storage_bucket": "thesiscurrency.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804419331237:android:8d533d3ceaeed0728f194c",
+        "android_client_info": {
+          "package_name": "com.example.tms_thesis_moroz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCaGmMm-ns4BQRLrEhDwW7CJ0h1RXtnTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
