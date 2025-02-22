@@ -10,8 +10,7 @@
         android:id="@+id/currencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Currency Name" />
+        android:layout_marginEnd="16dp"/>
 
     <Space
         android:layout_width="0dp"
@@ -21,8 +20,7 @@
     <TextView
         android:id="@+id/currencyRate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rate" />
+        android:layout_height="wrap_content"/>
     <Space
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,5 +31,6 @@
         android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
         android:src="@drawable/star" />
 </LinearLayout>

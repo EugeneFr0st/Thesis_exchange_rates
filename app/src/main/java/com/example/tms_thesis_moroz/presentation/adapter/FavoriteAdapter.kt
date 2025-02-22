@@ -1,34 +1,1 @@
-package com.example.tms_thesis_moroz.presentation.adapter
-
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.tms_thesis_moroz.databinding.ItemFavoriteBinding
-
-class FavoriteAdapter(
-    var favorites : List<FavoriteQuote>
-) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FavoriteViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int){
-        val favorite = favorites[position]
-        holder.bind(favorite)
-    }
-
-    override fun getItemCount(): Int = favorites.size
-
-    class FavoriteViewHolder(private val binding: ItemFavoriteBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(favorite:FavoriteQuote){
-            binding.favoriteName.text = favorite.name
-            binding.favoriteRate.text = favorite.rate.toString()
-        }
-    }
-
-
-    data class FavoriteQuote(val name: String, val rate: Double)
-
-}
+package com.example.tms_thesis_moroz.presentation.adapterimport android.view.LayoutInflaterimport android.view.ViewGroupimport androidx.recyclerview.widget.RecyclerViewimport com.example.tms_thesis_moroz.Rimport com.example.tms_thesis_moroz.data.model.CurrencyRatesEntityimport com.example.tms_thesis_moroz.databinding.ItemFavoriteBindingclass FavoriteAdapter(    private var favorites: MutableList<CurrencyRatesEntity>,    private val onFavoriteClick: (CurrencyRatesEntity) -> Unit,    private val onShareClick: (CurrencyRatesEntity) -> Unit) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {    class FavoriteViewHolder(        private val binding: ItemFavoriteBinding,        private val onFavoriteClick: (CurrencyRatesEntity) -> Unit,        private val onShareClick: (CurrencyRatesEntity) -> Unit    ) : RecyclerView.ViewHolder(binding.root) {        fun bind(favorites: CurrencyRatesEntity) {            binding.favoriteName.text = favorites.currencyPair            binding.favoriteRate.text = favorites.exchangeRate.toString()            binding.starButton.setImageResource(                if (favorites.isFavorite) R.drawable.gold_star else R.drawable.star            )            binding.starButton.setOnClickListener {                onFavoriteClick(favorites)            }            binding.favoriteShare.setOnClickListener {                onShareClick(favorites)            }        }    }    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {        val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)        return FavoriteViewHolder(binding, onFavoriteClick, onShareClick )    }    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {        holder.bind(favorites[position])    }    override fun getItemCount(): Int = favorites.size    fun updateData(newList: List<CurrencyRatesEntity>) {        favorites = newList.toMutableList()        notifyDataSetChanged()    }}

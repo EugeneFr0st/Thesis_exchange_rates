@@ -1,27 +1,25 @@
 package com.example.tms_thesis_moroz.presentation.view.fragment
 
-import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tms_thesis_moroz.data.api.CurrencyApi
 import com.example.tms_thesis_moroz.databinding.FragmentExchangeRatesBinding
-import com.example.tms_thesis_moroz.presentation.adapter.CurrencyAdapter
-import com.example.tms_thesis_moroz.presentation.adapter.CurrencyQuote
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.tms_thesis_moroz.presentation.adapter.ExchangeAdapter
+import com.example.tms_thesis_moroz.presentation.view_model.ExchangeViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExchangeFragment : Fragment() {
 
+    private val viewModel: ExchangeViewModel by viewModel()
     private var _binding: FragmentExchangeRatesBinding? = null
     private val binding get() = _binding!!
+
+    private var adapter: ExchangeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,40 +32,24 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(context)
-        binding.currencyRecyclerView.layoutManager = layoutManager
-        val adapter = CurrencyAdapter(emptyList())
-        binding.currencyRecyclerView.adapter = adapter
+        adapter = ExchangeAdapter(emptyList()) { currency ->
+            viewModel.changeFavoriteStatus(currency.id, currency.isFavorite)
+        }
+        binding.exchangeRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.exchangeRecyclerView.adapter = adapter
 
-        fetchAndDisplayCurrency(adapter)
-    }
+        viewModel.exchangeList.observe(viewLifecycleOwner) { currencies ->
+            adapter?.updateData(currencies)
+        }
 
-    private fun fetchAndDisplayCurrency(adapter: CurrencyAdapter) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.currencylayer.com")
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        viewModel.formattedCurrencies.observe(viewLifecycleOwner) { formattedData ->
+            binding.EURCost.text = formattedData["USDEUR"] ?: "N/A"
+            binding.RUBCost.text = formattedData["USDRUB"] ?: "N/A"
+            binding.BYNCost.text = formattedData["USDBYN"] ?: "N/A"
+        }
 
-        val currencyApi = retrofit.create(CurrencyApi::class.java)
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val currency = currencyApi.getCurrency()
-            val quotes = currency.quotes
-
-            val decimalFormat = DecimalFormat("#0.00")
-            val usdEur = decimalFormat.format(quotes["USDEUR"] ?: 0.0)
-            val usdRub = decimalFormat.format(quotes["USDRUB"] ?: 0.0)
-            val usdByn = decimalFormat.format(quotes["USDBYN"] ?: 0.0)
-
-            withContext(Dispatchers.Main) {
-                binding.EURCost.text = usdEur
-                binding.RUBCost.text = usdRub
-                binding.BYNCost.text = usdByn
-
-                adapter.currencies = quotes.entries.map { CurrencyQuote(it.key, it.value) }
-                adapter.notifyDataSetChanged()
-
-            }
+        lifecycleScope.launch {
+            viewModel.fetchAndDisplayCurrency()
         }
     }
 
