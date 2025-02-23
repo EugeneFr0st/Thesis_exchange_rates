@@ -23,7 +23,7 @@ class ConverterViewModel(
     val exchangeRates: LiveData<Map<String, Double>> get() = _exchangeRates
 
     private val _inputAmounts = mutableMapOf<String, Double>()
-    private var lastInputCurrency: String? = null  // Запоминаем последнюю введенную валюту
+    private var lastInputCurrency: String? = null
 
     private val userId: String?
         get() = authRepository.getCurrentUserId()
@@ -46,20 +46,20 @@ class ConverterViewModel(
 
     fun updateSelectedCurrencies(currencies: Set<String>) {
         _selectedCurrencies.value = currencies
-        _amounts.value = emptyMap() // Сброс значений
+        _amounts.value = emptyMap()
         _inputAmounts.clear()
         lastInputCurrency = null
     }
 
     fun updateAmount(currency: String, amount: Double) {
         _inputAmounts[currency] = amount
-        lastInputCurrency = currency  // Обновляем последнюю введенную валюту
+        lastInputCurrency = currency
     }
 
     fun convertCurrencies() {
         val exchangeRates = _exchangeRates.value ?: return
         val selectedCurrencies = _selectedCurrencies.value ?: return
-        val sourceCurrency = lastInputCurrency ?: return  // Проверяем, была ли выбрана валюта для ввода
+        val sourceCurrency = lastInputCurrency ?: return
         val sourceAmount = _inputAmounts[sourceCurrency] ?: return
 
         val newAmounts = mutableMapOf<String, Double>()

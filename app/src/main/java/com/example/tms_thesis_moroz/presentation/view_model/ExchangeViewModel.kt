@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tms_thesis_moroz.data.api.CurrencyApi
 import com.example.tms_thesis_moroz.data.model.CurrencyRatesEntity
 import com.example.tms_thesis_moroz.data.repository.AuthRepository
 import com.example.tms_thesis_moroz.data.repository.CurrencyRatesRepository
@@ -13,8 +12,7 @@ import java.text.DecimalFormat
 
 class ExchangeViewModel(
     private val repository: CurrencyRatesRepository,
-    private val authRepository: AuthRepository,
-    private val currencyApi: CurrencyApi
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _exchangeList = MutableLiveData<List<CurrencyRatesEntity>>()
@@ -23,35 +21,24 @@ class ExchangeViewModel(
     private val _formattedCurrencies = MutableLiveData<Map<String, String>>()
     val formattedCurrencies: LiveData<Map<String, String>> get() = _formattedCurrencies
 
+    private val _isDataLoaded = MutableLiveData<Boolean>(false)
+    val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
+
     fun fetchAndDisplayCurrency() {
-        val userId = authRepository.getCurrentUserId()
-        if (userId != null) {
-            viewModelScope.launch {
+        if (_isDataLoaded.value != true) {
+            val userId = authRepository.getCurrentUserId()
+            if (userId != null) {
+                viewModelScope.launch {
+                    val exchangeCurrencies = repository.getCurrencyRates()
 
-                val currency = currencyApi.getCurrency()
-                val quotes = currency.quotes ?: emptyMap()
+                    val formattedValues = exchangeCurrencies.associate {
+                        it.currencyPair to DecimalFormat("#0.00").format(it.exchangeRate)
+                    }
 
-                val decimalFormat = DecimalFormat("#0.00")
-                val formattedValues = mapOf(
-                    "USDEUR" to decimalFormat.format(quotes["USDEUR"] ?: 0.0),
-                    "USDRUB" to decimalFormat.format(quotes["USDRUB"] ?: 0.0),
-                    "USDBYN" to decimalFormat.format(quotes["USDBYN"] ?: 0.0)
-                )
-
-                _formattedCurrencies.postValue(formattedValues)
-
-                quotes.entries.forEach { (currencyPair, exchangeRate) ->
-                    val currencyRate = CurrencyRatesEntity(
-                        userId = userId,
-                        currencyPair = currencyPair,
-                        exchangeRate = exchangeRate,
-                        isFavorite = false
-                    )
-                    repository.addCurrencyRates(currencyRate)
+                    _formattedCurrencies.postValue(formattedValues)
+                    _exchangeList.postValue(exchangeCurrencies)
+                    _isDataLoaded.postValue(true)
                 }
-
-                val exchangeCurrencies = repository.getCurrencyRates()
-                _exchangeList.postValue(exchangeCurrencies)
             }
         }
     }

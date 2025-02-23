@@ -1,4 +1,4 @@
-package com.example.tms_thesis_moroz.presentation.view_model
+package com.example.tms_thesis_moroz.presentation.view.dialog
 
 import android.app.Dialog
 import android.content.Context

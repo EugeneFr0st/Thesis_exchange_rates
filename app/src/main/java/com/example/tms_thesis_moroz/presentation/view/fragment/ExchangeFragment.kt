@@ -48,8 +48,10 @@ class ExchangeFragment : Fragment() {
             binding.BYNCost.text = formattedData["USDBYN"] ?: "N/A"
         }
 
-        lifecycleScope.launch {
-            viewModel.fetchAndDisplayCurrency()
+        if (viewModel.isDataLoaded.value != true) {
+            lifecycleScope.launch {
+                viewModel.fetchAndDisplayCurrency()
+            }
         }
     }
 

@@ -39,7 +39,7 @@ val appModule = module {
 
     viewModel { RegistrationViewModel() }
     viewModel { LoginViewModel() }
-    viewModel { ExchangeViewModel(get(), get(), get()) }
+    viewModel { ExchangeViewModel(get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
     viewModel { ConverterViewModel(get(), get()) }
     viewModel { SettingsViewModel() }

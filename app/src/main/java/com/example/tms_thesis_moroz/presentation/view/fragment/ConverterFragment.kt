@@ -12,12 +12,11 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.example.tms_thesis_moroz.databinding.FragmentConverterBinding
 import com.example.tms_thesis_moroz.presentation.view_model.ConverterViewModel
-import com.example.tms_thesis_moroz.presentation.view_model.CurrencySelectionDialog
+import com.example.tms_thesis_moroz.presentation.view.dialog.CurrencySelectionDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.DecimalFormat
-import kotlin.math.min
 
 class ConverterFragment : Fragment() {
 
