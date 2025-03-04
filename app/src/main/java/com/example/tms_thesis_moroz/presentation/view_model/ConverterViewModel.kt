@@ -30,16 +30,26 @@ class ConverterViewModel(
 
     init {
         loadExchangeRates()
+        subscribeToCurrencyUpdates()
     }
 
     private fun loadExchangeRates() {
         viewModelScope.launch {
+            val userId = authRepository.getCurrentUserId() ?: return@launch
             try {
-                val rates = currencyRatesRepository.getCurrencyRates()
+                val rates = currencyRatesRepository.getCurrencyRates(userId)
                 val rateMap = rates.associate { it.currencyPair to it.exchangeRate }
                 _exchangeRates.value = rateMap
             } catch (e: Exception) {
                 _exchangeRates.value = emptyMap()
+            }
+        }
+    }
+
+    private fun subscribeToCurrencyUpdates() {
+        viewModelScope.launch {
+            currencyRatesRepository.favoriteStatusChanged.collect {
+                loadExchangeRates()
             }
         }
     }

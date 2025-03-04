@@ -21,7 +21,7 @@ class ExchangeAdapter(
             binding.currencyRate.text = currency.exchangeRate.toString()
 
             binding.starButton.setImageResource(
-                if (currency.isFavorite) R.drawable.gold_star else R.drawable.star
+                if (currency.isFavorite) R.drawable.ic_gold_star else R.drawable.ic_star
             )
 
             binding.starButton.setOnClickListener {

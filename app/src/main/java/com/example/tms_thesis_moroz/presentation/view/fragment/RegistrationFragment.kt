@@ -10,16 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.tms_thesis_moroz.R
 import com.example.tms_thesis_moroz.databinding.FragmentRegistrationBinding
 import com.example.tms_thesis_moroz.presentation.view_model.RegistrationViewModel
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegistrationFragment : Fragment() {
 
     private val viewModel: RegistrationViewModel by viewModel()
-    private lateinit var auth: FirebaseAuth
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
 
@@ -34,46 +29,55 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (FirebaseApp.getApps(requireContext()).isNotEmpty()) {
-            val auth = FirebaseAuth.getInstance()
-        }
-
-        auth = Firebase.auth
-
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            findNavController().navigate(R.id.action_registration_to_exchange)
-        }
-
         binding.registerButton.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
             val login = binding.email.text.toString()
             val pass = binding.password.text.toString()
 
             if (login.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(requireContext(), "Fill all fields!", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.GONE
+                showToast(getString(R.string.fill_all_fields))
                 return@setOnClickListener
             }
 
-            auth.createUserWithEmailAndPassword(login, pass).addOnCompleteListener(requireActivity()) { task ->
-                binding.progressBar.visibility = View.GONE
-                if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Account created!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_registration_to_login)
-                } else {
-                    Toast.makeText(requireContext(), "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.registerUser(login, pass)
         }
 
         binding.goToLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registration_to_login)
         }
+
+        observeViewModel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.checkCurrentUser()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeViewModel() {
+        viewModel.registrationResult.observe(viewLifecycleOwner) { result ->
+            binding.progressBar.visibility = View.GONE
+            if (result.isSuccess) {
+                showToast(getString(R.string.account_created))
+                findNavController().navigate(R.id.action_registration_to_login)
+            } else {
+                showToast(getString(R.string.authentication_failed))
+            }
+        }
+
+        viewModel.navigateToExchange.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigate(R.id.action_registration_to_exchange)
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

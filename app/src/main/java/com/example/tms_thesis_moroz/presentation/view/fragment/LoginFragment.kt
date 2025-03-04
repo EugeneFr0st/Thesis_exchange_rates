@@ -10,18 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.tms_thesis_moroz.R
 import com.example.tms_thesis_moroz.databinding.FragmentLoginBinding
 import com.example.tms_thesis_moroz.presentation.view_model.LoginViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModel()
-    private lateinit var auth: FirebaseAuth
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,45 +29,55 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
-
         binding.loginButton.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
             val login = binding.email.text.toString()
             val pass = binding.password.text.toString()
 
             if (login.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(requireContext(), "Fill all fields!", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.GONE
+                showToast(getString(R.string.fill_all_fields))
                 return@setOnClickListener
             }
 
-            auth.signInWithEmailAndPassword(login, pass).addOnCompleteListener(requireActivity()) { task ->
-                binding.progressBar.visibility = View.GONE
-                if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_login_to_exchange)
-                } else {
-                    Toast.makeText(requireContext(), "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.loginUser(login, pass)
         }
 
         binding.goToRegistration.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_registration)
         }
+
+        observeViewModel()
     }
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            findNavController().navigate(R.id.action_login_to_exchange)
-        }
+        viewModel.checkCurrentUser()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeViewModel() {
+        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
+            binding.progressBar.visibility = View.GONE
+            if (result.isSuccess) {
+                showToast(getString(R.string.login_successful))
+                findNavController().navigate(R.id.action_login_to_exchange)
+            } else {
+                showToast(getString(R.string.authentication_failed))
+            }
+        }
+
+        viewModel.navigateToExchange.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigate(R.id.action_login_to_exchange)
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

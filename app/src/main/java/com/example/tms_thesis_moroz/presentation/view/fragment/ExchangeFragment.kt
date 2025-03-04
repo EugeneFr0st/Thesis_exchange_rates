@@ -1,6 +1,7 @@
 package com.example.tms_thesis_moroz.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,26 +34,28 @@ class ExchangeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ExchangeAdapter(emptyList()) { currency ->
-            viewModel.changeFavoriteStatus(currency.id, currency.isFavorite)
+            val userId = viewModel.authRepository.getCurrentUserId() ?: return@ExchangeAdapter
+            viewModel.changeFavoriteStatus(currency.id, currency.isFavorite, userId)
         }
         binding.exchangeRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.exchangeRecyclerView.adapter = adapter
 
-        viewModel.exchangeList.observe(viewLifecycleOwner) { currencies ->
-            adapter?.updateData(currencies)
-        }
-
-        viewModel.formattedCurrencies.observe(viewLifecycleOwner) { formattedData ->
-            binding.EURCost.text = formattedData["USDEUR"] ?: "N/A"
-            binding.RUBCost.text = formattedData["USDRUB"] ?: "N/A"
-            binding.BYNCost.text = formattedData["USDBYN"] ?: "N/A"
-        }
-
-        if (viewModel.isDataLoaded.value != true) {
-            lifecycleScope.launch {
-                viewModel.fetchAndDisplayCurrency()
+        lifecycleScope.launch {
+            viewModel.exchangeList.collect { currencies ->
+                adapter?.updateData(currencies)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.formattedCurrencies.collect { formattedData ->
+                binding.EURCost.text = formattedData["USDEUR"] ?: "N/A"
+                binding.RUBCost.text = formattedData["USDRUB"] ?: "N/A"
+                binding.BYNCost.text = formattedData["USDBYN"] ?: "N/A"
+            }
+        }
+
+        val userId = viewModel.authRepository.getCurrentUserId() ?: return
+        viewModel.fetchAndDisplayCurrency(userId)
     }
 
     override fun onDestroyView() {

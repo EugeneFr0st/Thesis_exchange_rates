@@ -9,13 +9,12 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="Курс валют"
+        android:label="@string/currency_exchange"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.Light">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.view.activity.SingleActivity"
-            android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

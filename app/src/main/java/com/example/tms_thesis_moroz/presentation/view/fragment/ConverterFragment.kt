@@ -54,7 +54,8 @@ class ConverterFragment : Fragment() {
 
     private fun showCurrencySelectionDialog() {
         val allCurrencies = listOf("USD", "EUR", "RUB", "GBP", "JPY")
-        val selectedCurrencies = viewModel.selectedCurrencies.value?.toMutableSet() ?: mutableSetOf()
+        val selectedCurrencies =
+            viewModel.selectedCurrencies.value?.toMutableSet() ?: mutableSetOf()
 
         val dialog = CurrencySelectionDialog(
             requireContext(),
@@ -67,6 +68,11 @@ class ConverterFragment : Fragment() {
     }
 
     private fun updateCurrencyFields(currencies: Set<String>) {
+        binding.currencyContainer.children
+            .filterIsInstance<TextInputLayout>()
+            .filter { it.tag !in currencies }
+            .forEach { binding.currencyContainer.removeView(it) }
+
         val existingFields = binding.currencyContainer.children
             .filterIsInstance<TextInputLayout>()
             .associateBy { it.tag as String }
@@ -127,7 +133,8 @@ class ConverterFragment : Fragment() {
     }
 
     private fun formatAmount(amount: Double): String {
-        return if (amount % 1 == 0.0) amount.toInt().toString() else DecimalFormat("#,##0.00").format(amount)
+        return if (amount % 1 == 0.0) amount.toInt()
+            .toString() else DecimalFormat("#,##0.00").format(amount)
     }
 
     override fun onDestroyView() {

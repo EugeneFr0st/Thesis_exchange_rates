@@ -24,7 +24,7 @@ class FavoriteAdapter(
             binding.favoriteRate.text = favorites.exchangeRate.toString()
 
             binding.starButton.setImageResource(
-                if (favorites.isFavorite) R.drawable.gold_star else R.drawable.star
+                if (favorites.isFavorite) R.drawable.ic_gold_star else R.drawable.ic_star
             )
 
             binding.starButton.setOnClickListener {

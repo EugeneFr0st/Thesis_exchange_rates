@@ -5,6 +5,10 @@
     android:layout_height="50dp"
     android:orientation="horizontal"
     android:gravity="center"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/shape_rounded_variants"
     android:padding="8dp">
 
     <TextView
@@ -12,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="favorite"/>
+        android:text="@string/favorite"/>
 
     <Space
         android:layout_width="0dp"
@@ -23,7 +27,7 @@
         android:id="@+id/favoriteRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="cours" />
+        android:text="@string/favorite" />
 
     <Space
         android:layout_width="0dp"
@@ -32,11 +36,11 @@
 
     <ImageButton
         android:id="@+id/starButton"
-        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
-        android:src="@drawable/star" />
+        android:src="@drawable/ic_gold_star"
+        android:background="@android:color/transparent"/>
 
     <Space
         android:layout_width="0dp"
@@ -45,9 +49,9 @@
 
     <ImageButton
         android:id="@+id/favoriteShare"
-        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
-        android:src="@drawable/share" />
+        android:src="@drawable/share"
+        android:background="@android:color/transparent"/>
 </LinearLayout>

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.tms_thesis_moroz.presentation.view.fragment.RegistrationFragment"
-        android:label="fragment_registration"
+        android:label="@string/registration"
         tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registration_to_login"

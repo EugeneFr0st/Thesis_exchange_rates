@@ -14,16 +14,14 @@ interface CurrencyRatesDao {
     suspend fun insertOrUpdate(currencyRate:CurrencyRatesEntity)
 
     //для получения всех данных
-    @Query("SELECT * FROM currency_rates")
-    suspend fun getAllCurrencyRates() : List<CurrencyRatesEntity>
+    @Query("SELECT * FROM currency_rates WHERE user_id = :userId")
+    suspend fun getAllCurrencyRates(userId: String) : List<CurrencyRatesEntity>
 
     //для получени избранных данных
     @Query("SELECT * FROM currency_rates WHERE is_favorite=1 AND user_id = :userId")
     suspend fun getFavoriteCurrencyRates(userId:String) : List<CurrencyRatesEntity>
 
     //для обновления данных
-    @Query("UPDATE currency_rates SET is_favorite = :isFavorite WHERE id = :id")
-    suspend fun updateFavoriteStatus(id: Int, isFavorite:Boolean = false )
-
+    @Query("UPDATE currency_rates SET is_favorite = :isFavorite WHERE id = :id AND user_id = :userId")
+    suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean, userId: String)
 }
-

@@ -34,8 +34,8 @@ val appModule = module {
     }
 
     single { FirebaseAuth.getInstance() }
-    single { AuthRepository(get()) }
-    single { CurrencyRatesRepository(get()) }
+    single { AuthRepository() }
+    single { CurrencyRatesRepository(get(), get()) }
 
     viewModel { RegistrationViewModel() }
     viewModel { LoginViewModel() }

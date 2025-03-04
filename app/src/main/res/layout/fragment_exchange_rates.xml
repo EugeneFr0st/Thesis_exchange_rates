@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/text_page"
@@ -18,9 +19,11 @@
 
     <LinearLayout
         android:id="@+id/tree_items"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/shape_rounded_variants"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +33,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -41,7 +45,8 @@
             <TextView
                 android:id="@+id/EUR_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:text="3.14" />
         </LinearLayout>
 
         <Space
@@ -63,7 +68,8 @@
             <TextView
                 android:id="@+id/RUB_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:text="3.14" />
         </LinearLayout>
 
         <Space
@@ -74,6 +80,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -86,15 +93,17 @@
             <TextView
                 android:id="@+id/BYN_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:text="3.14" />
         </LinearLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exchangeRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="600dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_rounded_exchange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tree_items" />
